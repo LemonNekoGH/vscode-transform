@@ -1,5 +1,5 @@
 import * as vscode from 'vscode'
-import jsonToGo from 'json-to-go'
+import jsonToGo from 'json-to-go' // this module is commonjs, so esbuild cannot build it correctly
 import gofmt from '@lemonneko/gofmt.js'
 
 export async function activate(context: vscode.ExtensionContext) {

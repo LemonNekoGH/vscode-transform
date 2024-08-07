@@ -3,7 +3,6 @@
   "name": "vscode-transform",
   "displayName": "VSCode Transform",
   "version": "0.1.0",
-  "packageManager": "pnpm@9.4.0+sha256.b6fd0bfda555e7e584ad7e56b30c68b01d5a04f9ee93989f4b93ca8473c49c74",
   "description": "A converter collection in your vscode.",
   "repository": {
     "type": "git",
@@ -27,18 +26,15 @@
     ]
   },
   "scripts": {
-    "vscode:prepublish": "pnpm run build:prod",
-    "build:test": "pnpm run type-check && node ./scripts/build.js",
+    "vscode:prepublish": "npm run compile",
     "type-check": "tsc --noEmit",
-    "watch:esbuild": "node ./scripts/build.js --watch",
-    "watch:tsc": "tsc -watch -p ./",
-    "pretest": "pnpm run build:test && pnpm run lint",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run build:test && npm run lint",
     "lint": "eslint src",
     "test": "vscode-test",
-    "watch": "pnpm run watch:*",
-    "build:prod": "pnpm run type-check && node ./scripts/build.js --production",
-    "publish": "vsce publish --no-dependencies",
-    "package": "vsce package --no-dependencies"
+    "compile": "npm run type-check",
+    "publish": "vsce publish",
+    "package": "vsce package"
   },
   "dependencies": {
     "@lemonneko/gofmt.js": "^0.3.0",
@@ -48,14 +44,13 @@
   "devDependencies": {
     "@antfu/eslint-config": "^2.24.1",
     "@types/mocha": "^10.0.7",
-    "@types/node": "20.x",
+    "@types/node": "^20.12.2",
     "@types/vscode": "^1.91.0",
     "@typescript-eslint/eslint-plugin": "^7.14.1",
     "@typescript-eslint/parser": "^7.11.0",
     "@vscode/test-cli": "^0.0.9",
     "@vscode/test-electron": "^2.4.0",
     "@vscode/vsce": "^2.31.1",
-    "esbuild": "^0.23.0",
     "eslint": "^8.57.0",
     "typescript": "^5.4.5"
   }
