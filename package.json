@@ -1,0 +1,58 @@
+{
+  "publisher": "LemonNeko",
+  "name": "vscode-transform",
+  "displayName": "VSCode Transform",
+  "version": "0.1.0",
+  "packageManager": "pnpm@9.4.0+sha256.b6fd0bfda555e7e584ad7e56b30c68b01d5a04f9ee93989f4b93ca8473c49c74",
+  "description": "A converter collection in your vscode.",
+  "categories": [
+    "Other"
+  ],
+  "main": "./out/extension.js",
+  "engines": {
+    "vscode": "^1.91.0"
+  },
+  "activationEvents": [],
+  "contributes": {
+    "commands": [
+      {
+        "command": "vscode-transform.json-to-go",
+        "category": "VSCode Transform",
+        "title": "JSON to Go struct"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "pnpm run build:prod",
+    "build:test": "pnpm run type-check && node ./scripts/build.js",
+    "type-check": "tsc --noEmit",
+    "watch:esbuild": "node ./scripts/build.js --watch",
+    "watch:tsc": "tsc -watch -p ./",
+    "pretest": "pnpm run build:test && pnpm run lint",
+    "lint": "eslint src",
+    "test": "vscode-test",
+    "watch": "pnpm run watch:*",
+    "build:prod": "pnpm run type-check && node ./scripts/build.js --production",
+    "publish": "vsce publish --no-dependencies",
+    "package": "vsce package --no-dependencies"
+  },
+  "dependencies": {
+    "@lemonneko/gofmt.js": "^0.3.0",
+    "@types/json-to-go": "^1.0.0",
+    "json-to-go": "^1.0.1"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^2.24.1",
+    "@types/mocha": "^10.0.7",
+    "@types/node": "20.x",
+    "@types/vscode": "^1.91.0",
+    "@typescript-eslint/eslint-plugin": "^7.14.1",
+    "@typescript-eslint/parser": "^7.11.0",
+    "@vscode/test-cli": "^0.0.9",
+    "@vscode/test-electron": "^2.4.0",
+    "@vscode/vsce": "^2.31.1",
+    "esbuild": "^0.23.0",
+    "eslint": "^8.57.0",
+    "typescript": "^5.4.5"
+  }
+}
