@@ -5,6 +5,10 @@
   "version": "0.1.0",
   "packageManager": "pnpm@9.4.0+sha256.b6fd0bfda555e7e584ad7e56b30c68b01d5a04f9ee93989f4b93ca8473c49c74",
   "description": "A converter collection in your vscode.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LemonNekoGH/vscode-transform"
+  },
   "categories": [
     "Other"
   ],

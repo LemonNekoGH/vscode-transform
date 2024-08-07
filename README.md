@@ -20,4 +20,4 @@ If you like this project, you can support us in the following ways:
 ## Other extensions you may need to use
 - [Typescript JSON Schema generator](https://marketplace.visualstudio.com/items?itemName=marcoq.vscode-typescript-to-json-schema) - Generates a json schema from `TypeScript` type.
 - [transform json](https://github.com/raotaohub/vscode-transform) - Generate a `TypesScript` type from json schema.
-- [graphql-schema-to-typescript] - Generate a `TypeScript` type from `GraphQL` type
+- [graphql-schema-to-typescript](https://marketplace.visualstudio.com/items?itemName=liyikunl.vscode-graphql-schema-to-typescript) - Generate a `TypeScript` type from `GraphQL` type
