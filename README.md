@@ -1,3 +1,7 @@
+<p algin="center">
+    <img src="./assets/logo.png" width="124px" height="124px" />
+</p>
+
 # vscode-transform
 VSCode Transform is a VSCode extension that provides a converter collection during coding.
 

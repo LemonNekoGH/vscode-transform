@@ -12,6 +12,7 @@
     "Other"
   ],
   "main": "./out/extension.js",
+  "icon": "assets/logo.png",
   "engines": {
     "vscode": "^1.91.0"
   },
