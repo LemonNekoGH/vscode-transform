@@ -2,7 +2,7 @@
   "publisher": "LemonNeko",
   "name": "vscode-transform",
   "displayName": "VSCode Transform",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A converter collection in your vscode.",
   "repository": {
     "type": "git",
