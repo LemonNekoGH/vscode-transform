@@ -1,54 +1,85 @@
 import * as vscode from 'vscode'
-import jsonToGo from 'json-to-go' // this module is commonjs, so esbuild cannot build it correctly
-import gofmt from '@lemonneko/gofmt.js'
+import { ModelOperations as LanguageDetector } from '@vscode/vscode-languagedetection'
+import converters from './converters'
 
 export async function activate(context: vscode.ExtensionContext) {
-  const disposable = vscode.commands.registerCommand('vscode-transform.json-to-go', async () => {
+  const outputChannel = vscode.window.createOutputChannel('VSCode Transform')
+
+  const languageDetector = new LanguageDetector()
+
+  const commandDisposables = converters.map((converter) => {
+    return vscode.commands.registerCommand(converter.command, async () => {
+      const editor = vscode.window.activeTextEditor
+      if (!editor) {
+        vscode.window.showErrorMessage('No active editor found')
+        return
+      }
+
+      const document = editor.document
+      const text = document.getText(editor.selection)
+
+      if (!text) {
+        vscode.window.showErrorMessage('No text selected')
+        return
+      }
+
+      let convertResult = ''
+      try {
+        convertResult = await converter.convert(text)
+      }
+      catch (e) {
+        const error = e as Error
+        vscode.window.showErrorMessage(error.message)
+        outputChannel.appendLine(error.message)
+        return
+      }
+
+      editor.edit((editBuilder) => {
+        editBuilder.replace(editor.selection, convertResult)
+      })
+      editor.selection = new vscode.Selection(0, 0, 0, 0)
+    })
+  })
+
+  const pasteAndConvertCommand = vscode.commands.registerCommand('vscode-transform.paste-and-convert', async () => {
     const editor = vscode.window.activeTextEditor
     if (!editor) {
       vscode.window.showErrorMessage('No active editor found')
       return
     }
 
-    const document = editor.document
-    const text = document.getText(editor.selection)
+    const clipboardText = await vscode.env.clipboard.readText()
+    const cursorPosition = editor.selection.active
+    await editor.edit((editBuilder) => {
+      editBuilder.insert(editor.selection.active, clipboardText)
+    })
+    const clipboardSplit = clipboardText.split('\n')
+    editor.selection = new vscode.Selection(cursorPosition, cursorPosition.translate(clipboardSplit.length, clipboardSplit.at(-1)!.length))
 
-    if (!text) {
-      vscode.window.showErrorMessage('No text selected')
+    const possibleLanguages = await languageDetector.runModel(clipboardText)
+    const language = possibleLanguages.sort((a, b) => b.confidence - a.confidence)[0]
+    outputChannel.appendLine(`Pasted text language: ${language.languageId}, editor language: ${editor.document.languageId}`)
+
+    const converter = converters.find(converter => converter.from === language.languageId && converter.to === editor.document.languageId)
+    if (!converter) {
+      outputChannel.appendLine('No converter found')
+      vscode.window.showErrorMessage(`No converter found from ${language.languageId} to ${editor.document.languageId}`)
       return
     }
 
-    let json
-    try {
-      json = JSON.parse(text)
-    }
-    catch (error) {
-      const errorMessage = (error as Error).message
-      vscode.window.showErrorMessage(`Invalid JSON: ${errorMessage}`)
-      console.error(errorMessage)
+    const quickPickResult = await vscode.window.showQuickPick(['Yes', 'No'], {
+      placeHolder: `Convert pasted text from ${language.languageId} to ${editor.document.languageId}?`,
+    })
+
+    if (quickPickResult !== 'Yes') {
       return
     }
 
-    const goStruct = jsonToGo(JSON.stringify(json), 'GeneratedStruct')
-    if (goStruct.error) {
-      vscode.window.showErrorMessage(`Error converting JSON to Go struct: ${goStruct.error}`)
-      console.error(goStruct.error)
-      return
-    }
-
-    const [formatResult, formatError] = await gofmt.format(goStruct.go)
-    if (formatError) {
-      vscode.window.showErrorMessage(`Error formatting Go struct: ${formatError}`)
-      console.error(formatError)
-      return
-    }
-
-    vscode.env.clipboard.writeText(formatResult)
-    vscode.window.showInformationMessage('Converting result copied to clipboard')
+    vscode.commands.executeCommand(converter.command)
   })
 
-  console.log('Congratulations, your extension "vscode-transform" is now active!')
-  context.subscriptions.push(disposable)
+  outputChannel.appendLine('Congratulations, your extension "vscode-transform" is now active!')
+  context.subscriptions.push(...commandDisposables, pasteAndConvertCommand)
 }
 
 export function deactivate() {}

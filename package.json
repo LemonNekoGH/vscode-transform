@@ -2,7 +2,7 @@
   "publisher": "LemonNeko",
   "name": "vscode-transform",
   "displayName": "VSCode Transform",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A converter collection in your vscode.",
   "repository": {
     "type": "git",
@@ -12,16 +12,41 @@
     "Other"
   ],
   "main": "./out/extension.js",
+  "icon": "assets/logo.png",
   "engines": {
     "vscode": "^1.91.0"
   },
-  "activationEvents": [],
+  "activationEvents": [
+    "onLanguage:json",
+    "onLanguage:go"
+  ],
   "contributes": {
     "commands": [
       {
         "command": "vscode-transform.json-to-go",
         "category": "VSCode Transform",
         "title": "JSON to Go struct"
+      },
+      {
+        "command": "vscode-transform.paste-and-convert",
+        "category": "VSCode Transform",
+        "title": "Paste and Convert"
+      }
+    ],
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "vscode-transform.json-to-go",
+          "when": "editorLangId == json || editorLangId == go"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "vscode-transform.paste-and-convert",
+        "key": "ctrl+shift+v",
+        "mac": "cmd+shift+v",
+        "when": "editorTextFocus"
       }
     ]
   },
@@ -32,17 +57,18 @@
     "pretest": "npm run build:test && npm run lint",
     "lint": "eslint src",
     "test": "vscode-test",
-    "compile": "npm run type-check",
+    "compile": "tsc -p ./",
     "publish": "vsce publish",
     "package": "vsce package"
   },
   "dependencies": {
     "@lemonneko/gofmt.js": "^0.3.0",
-    "@types/json-to-go": "^1.0.0",
+    "@vscode/vscode-languagedetection": "^1.0.22",
     "json-to-go": "^1.0.1"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^2.24.1",
+    "@types/json-to-go": "^1.0.0",
     "@types/mocha": "^10.0.7",
     "@types/node": "^20.12.2",
     "@types/vscode": "^1.91.0",

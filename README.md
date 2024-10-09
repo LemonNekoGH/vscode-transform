@@ -1,11 +1,23 @@
+<p algin="center">
+    <img src="./assets/logo.png" width="124px" height="124px" />
+</p>
+
 # vscode-transform
 VSCode Transform is a VSCode extension that provides a converter collection during coding.
 
 ## Usage
-Select the text which you want to convert, open the command plate, select the converter you need, the result will be copied to your clipboard, then you can paste it quickly.
+### Use shortcut
+Use the shortcut `shift+ctrl+v` to paste your text, we will automatic detect the source language and target language then prompt if you want to convert.
 
 <p algin="center">
-    <img src="./assets/json-to-go-demo.gif" />
+    <img src="./assets/usage1.gif" />
+</p>
+
+### Use command plate
+Select the text which you want to convert, open the command plate, select the converter you need, selection will be replaced to convert result.
+
+<p algin="center">
+    <img src="./assets/usage2.gif" />
 </p>
 
 ## Converters
