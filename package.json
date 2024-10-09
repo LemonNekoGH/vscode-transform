@@ -25,6 +25,27 @@
         "command": "vscode-transform.json-to-go",
         "category": "VSCode Transform",
         "title": "JSON to Go struct"
+      },
+      {
+        "command": "vscode-transform.paste-and-convert",
+        "category": "VSCode Transform",
+        "title": "Paste and Convert"
+      }
+    ],
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "vscode-transform.json-to-go",
+          "when": "editorLangId == json || editorLangId == go"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "vscode-transform.paste-and-convert",
+        "key": "ctrl+shift+v",
+        "mac": "cmd+shift+v",
+        "when": "editorTextFocus"
       }
     ]
   },
